@@ -30,7 +30,7 @@ def getPackageName(dir) {
   def dirStr = dir.toString().replaceAll("\\\\", "/")
   dirStr = dirStr.split("/");
   def resultPackageName = "";
-  def index = dirStr.length;
+  def index = dirStr.length + 1;
   for (int i = 0; i < dirStr.length; i++) {
     if (dirStr[i] == "com") {
       index = i;
@@ -38,6 +38,9 @@ def getPackageName(dir) {
     if (i >= index) {
       resultPackageName += dirStr[i] + ".";
     }
+  }
+  if( index == dirStr.length + 1){
+    return "";
   }
   return resultPackageName.substring(0, resultPackageName.length() - 1);
 }
