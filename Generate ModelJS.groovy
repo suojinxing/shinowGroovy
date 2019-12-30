@@ -61,6 +61,7 @@ def generate(out, className, fields) {
     out.println("            writeAllFields: true")
     out.println("        },")
     out.println "        reader: {"
+    out.println "            type: 'json',"
     out.println "            rootProperty: 'object'"
     out.println "        }"
     out.println "    }"
