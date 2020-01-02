@@ -26,7 +26,6 @@ FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generate
 }
 
 def getPackageName(dir) {
-//G:\projects\abc-lims-msc-pluripotent\src\main\java\com\shinow\abc\seeddisinfectionpreparation
     def dirStr = dir.toString().replaceAll("\\\\", "/")
     dirStr = dirStr.split("/");
     def resultPackageName = "";
@@ -39,7 +38,7 @@ def getPackageName(dir) {
             resultPackageName += dirStr[i] + ".";
         }
     }
-    if( index == dirStr.length + 1){
+    if (index == dirStr.length + 1) {
         return "";
     }
     return resultPackageName.substring(0, resultPackageName.length() - 1);
@@ -53,12 +52,21 @@ def generate(table, dir) {
 }
 
 def generate(packageName, out, className, fields) {
+
     out.println "package $packageName;"
     out.println ""
-    out.println "import com.shinow.abc.common.domain.Entity;"
-    out.println "import java.util.Date;"
+    def flag = false;
+    fields.each(){
+        // 判断是否有日期类型，来导入日期类。
+        if(it.type == "Date"){
+            flag = true;
+        }
+    }
+    if(flag){
+        out.println "import java.util.Date;"
+    }
     out.println ""
-    out.println "public class $className extends Entity {"
+    out.println "public class $className {"
     fields.each() {
         if (it.name == "uuid") {
             return true;
@@ -73,7 +81,6 @@ def generate(packageName, out, className, fields) {
             return true;
         }
         if (it.type == "Date") {
-            out.println ""
             out.println "  public ${it.type} get${it.name.capitalize()}() {"
             out.println "       if (${it.name} == null) {"
             out.println "           return null;"
@@ -91,7 +98,6 @@ def generate(packageName, out, className, fields) {
             out.println ""
             return true;
         }
-        out.println ""
         out.println "  public ${it.type} get${it.name.capitalize()}() {"
         out.println "    return ${it.name};"
         out.println "  }"
