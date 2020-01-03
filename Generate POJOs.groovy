@@ -55,6 +55,7 @@ def generate(packageName, out, className, fields) {
 
     out.println "package $packageName;"
     out.println ""
+    out.println "import com.shinow.abc.common.domain.Entity;"
     def flag = false;
     fields.each(){
         // 判断是否有日期类型，来导入日期类。
@@ -66,7 +67,7 @@ def generate(packageName, out, className, fields) {
         out.println "import java.util.Date;"
     }
     out.println ""
-    out.println "public class $className {"
+    out.println "public class $className extends Entity {"
     fields.each() {
         if (it.name == "uuid") {
             return true;
