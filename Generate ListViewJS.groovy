@@ -26,7 +26,7 @@ def generate(table, dir) {
 def generate(out, className, fields) {
     out.println("Ext.define('Amili.xxxxviewpathxxxx.view.ListView', {")
     out.println("        extend: 'Ext.grid.Panel',")
-    out.println("        alias: 'widget.xxxxviewpathxxxx-list',")
+    out.println("        alias: 'widget.xxxxviewpathxxxx-view-list',")
     out.println("       ")
     out.println("        requires: [")
     out.println("            //'Amili.xxxxviewpathxxxx.view.ListViewModel',")

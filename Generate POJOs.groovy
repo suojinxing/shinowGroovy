@@ -52,7 +52,6 @@ def generate(table, dir) {
 }
 
 def generate(packageName, out, className, fields) {
-
     out.println "package $packageName;"
     out.println ""
     out.println "import com.shinow.abc.common.domain.Entity;"
