@@ -62,10 +62,10 @@ def generate(out, className, fields) {
         out.println "            align: 'center',"
         out.println "            dataIndex: '" + fields.get(i)["name"] + "',"
         if((fields.get(i)["name"]+"").endsWith("or") || (fields.get(i)["name"]+"").endsWith("er")){
-            out.println "            renderer: function (value) {"
-            out.println "                var store = this.getViewModel().getStore('operators'),"
-            out.println "                    idx = store.findExact('value', value),"
-            out.println "                    record = store.getAt(idx);"
+            out.println "            renderer(value) {"
+            out.println "                let store = this.getViewModel().getStore('operators')"
+            out.println "                let idx = store.findExact('value', value)"
+            out.println "                let record = store.getAt(idx)"
             out.println "                return record === null || record === undefined ? '' : record.data.name;"
             out.println "            }"
         }
@@ -89,7 +89,7 @@ def generate(out, className, fields) {
     out.println("            dock: 'bottom',")
     out.println("            displayInfo: true")
     out.println("        }]")
-    out.println("    }, function () {")
+    out.println("    }, () => {")
     out.println("        'use strict';")
     out.println("        Ext.util.CSS.swapStyleSheet('Amili.xxxxviewpathxxxx.view.ListView', Amili.getApplication().paths['Amili.xxxxviewpathxxxx'] ? './xxxxviewpathxxxx/view/ListView.css' : './webjars/xxxxviewpathxxxx/view/ListView.css');")
     out.println("    }")

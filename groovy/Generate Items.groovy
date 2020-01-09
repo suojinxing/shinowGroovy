@@ -20,7 +20,7 @@ FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generate
 def generate(table, dir) {
     def className = javaName(table.getName(), true)
     def fields = calcFields(table)
-    new File(dir, "items.js").withPrintWriter("utf-8") { out -> generate(out, className, fields) }
+    new File(dir, "itemsxxxxxx.js").withPrintWriter("utf-8") { out -> generate(out, className, fields) }
 }
 
 def generate(out, className, fields) {
@@ -40,11 +40,12 @@ def generate(out, className, fields) {
         out.println "            awidth: Amili.tickMark(25),"
 
         if((fields.get(i)["name"]+"").endsWith("or") || (fields.get(i)["name"]+"").endsWith("er")){
+            out.println "            xtype: 'combobox',"
             out.println "            displayField: 'name',"
             out.println "            valueField: 'value',"
             out.println "            bind: {"
             out.println "                store: '{operators}',"
-            out.println "                value: '{xxxxxxxxx.${fields.get(i)["name"]}}"
+            out.println "                value: '{xxxxxxxxx.${fields.get(i)["name"]}}'"
             out.println "            }"
         }else{
             out.println "            bind: '{xxxxxxxxx.${fields.get(i)["name"]}}'"
