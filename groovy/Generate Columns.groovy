@@ -40,11 +40,11 @@ def generate(out, className, fields) {
         out.println "            align: 'center',"
         out.println "            dataIndex: '" + fields.get(i)["name"] + "',"
         if((fields.get(i)["name"]+"").endsWith("or") || (fields.get(i)["name"]+"").endsWith("er")){
-            out.println "            renderer: function (value) {"
-            out.println "                var store = this.getViewModel().getStore('operators'),"
-            out.println "                    idx = store.findExact('value', value),"
-            out.println "                    record = store.getAt(idx);"
-            out.println "                return record === null || record === undefined ? '' : record.data.name;"
+            out.println "            renderer(value) {"
+            out.println "                // let store = this.getViewModel().getStore('operators')"
+            out.println "                // let idx = store.findExact('value', value)"
+            out.println "                // let record = store.getAt(idx)"
+            out.println "                // return record === null || record === undefined ? '' : record.data.name;"
             out.println "            }"
         }
         if (i == fields.size() - 1) {
