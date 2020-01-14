@@ -48,6 +48,7 @@ def generate(out, className, fields) {
             out.println "                value: '{xxxxxxxxx.${fields.get(i)["name"]}}'"
             out.println "            }"
         }else{
+            out.println "            xtype: 'textfield',"
             out.println "            bind: '{xxxxxxxxx.${fields.get(i)["name"]}}'"
         }
         if (i == fields.size() - 1) {
