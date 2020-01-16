@@ -2,8 +2,6 @@ import com.intellij.database.model.DasTable
 import com.intellij.database.util.Case
 import com.intellij.database.util.DasUtil
 
-import java.lang.String
-
 typeMapping = [
         (~/(?i)int/)                             : "Integer",
         (~/(?i)bool|bit/)                        : "Boolean",
@@ -44,7 +42,7 @@ def generate(out, className, fields) {
     out.println("        enableColumnHide: false,")
     out.println("        reference: 'xxxxviewpathxxxxlist',")
     out.println("        bind: {")
-    out.println("            //store: '{xxxxstoresxxxx}'")
+    out.println("            //store: '{xxxxviewpathxxxxs}'")
     out.println("        },")
     out.println("        columns: [{")
     out.println("            xtype: 'rownumberer',")
@@ -62,12 +60,12 @@ def generate(out, className, fields) {
         out.println "            align: 'center',"
         out.println "            dataIndex: '" + fields.get(i)["name"] + "',"
         if((fields.get(i)["name"]+"").endsWith("or") || (fields.get(i)["name"]+"").endsWith("er")){
-            out.println "            renderer(value) {"
-            out.println "                let store = this.getViewModel().getStore('operators')"
-            out.println "                let idx = store.findExact('value', value)"
-            out.println "                let record = store.getAt(idx)"
-            out.println "                return record === null || record === undefined ? '' : record.data.name;"
-            out.println "            }"
+            out.println "            //renderer(value) {"
+            out.println "                //let store = this.getViewModel().getStore('operators')"
+            out.println "                //let idx = store.findExact('value', value)"
+            out.println "                //let record = store.getAt(idx)"
+            out.println "                //return record === null || record === undefined ? '' : record.data.name;"
+            out.println "            //}"
         }
         if (i == fields.size() - 1) {
             out.println "        }],"
@@ -84,7 +82,7 @@ def generate(out, className, fields) {
     out.println("        }, {")
     out.println("            xtype: 'pagingtoolbar',")
     out.println("            bind: {")
-    out.println("                //store: '{xxxxstoresxxxx}'")
+    out.println("                //store: '{xxxxviewpathxxxxs}'")
     out.println("            },")
     out.println("            dock: 'bottom',")
     out.println("            displayInfo: true")
