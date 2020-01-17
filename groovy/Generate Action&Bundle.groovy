@@ -6,13 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-// 自定义配置项
-prefixLength = 6
-sessionFactoryKey = "autologousmsc"
-projectPath = "/Users/apple/shinowProject/abc-lims-msc-pluripotent/src/main/java/com/shinow/abc"
-rootModelDir = "xxxmodelxxx";
-packageName = ""
 typeMapping = [
         (~/(?i)int/)                             : "Integer",
         (~/(?i)bool|bit/)                        : "Boolean",
@@ -22,9 +15,26 @@ typeMapping = [
         (~/(?i)blob|binary|bfile|clob|raw|image/): "InputStream"
 ]
 
-FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generated files") { dir ->
-    SELECTION.filter { it instanceof DasTable }.each { generate(it, dir) }
+// ---------------------------------------------------------------------------------
+// 自定义配置项
+prefixLength = 6
+sessionFactoryKey = "autologousmsc"
+projectPath = "/Users/apple/shinowProject/abc-lims-msc-pluripotent/src/main/java/com/shinow/abc"
+rootModelDir = "xxxxx_model_xxxxx"; // 模块名
+
+// 包名
+packageName = ""
+
+/*
+ * 将路径平台化，适应window、MacOS多平台化
+ */
+def platformPtath(path){
+    return path.replaceAll("\\\\","/")
 }
+
+// 将路径平台化
+projectPath = platformPtath(projectPath)
+rootModelDir = platformPtath(rootModelDir)
 
 def getPackageName(dir) {
     def dirStr = dir.toString().replaceAll("\\\\", "/")
@@ -43,6 +53,10 @@ def getPackageName(dir) {
         return "";
     }
     return resultPackageName.substring(0, resultPackageName.length() - 1);
+}
+
+FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generated files") { dir ->
+    SELECTION.filter { it instanceof DasTable }.each { generate(it, dir) }
 }
 
 def generate(table, dir) {

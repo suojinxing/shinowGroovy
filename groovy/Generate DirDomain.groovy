@@ -15,19 +15,31 @@ typeMapping = [
         (~/(?i)blob|binary|bfile|clob|raw|image/): "InputStream"
 ]
 
-
+// ---------------------------------------------------------------------------------
 // 自定义配置项，只配置数据库前缀长度和模块的包名
 // T_MSC_AU  ===> prefixLength=6   长度按字母算，下划线不做计数
+//projectPath = "project_absolute_path_eg_user_shinow_abc"
+//rootModelDir = "modelname_eg_materialmanagent";
 prefixLength = 6
 sessionFactoryKey = "autologousmsc"
 projectPath = "/Users/apple/shinowProject/abc-lims-msc-pluripotent/src/main/java/com/shinow/abc"
-rootModelDir = "xxxxxxxmodelxxxxx";
-//projectPath = "project_absolute_path_eg_user_shinow_abc"
-//rootModelDir = "modelname_eg_materialmanagent";
+rootModelDir = "xxxxx_model_xxxxx";
 
 hbmxmlDir = getHbmXmlDir(projectPath)
 testClassDir = getTestClassDir(projectPath)
+// 包名
 packageName = ""
+
+/*
+ * 将路径平台化，适应window、MacOS多平台化
+ */
+def platformPtath(path){
+    return path.replaceAll("\\\\","/")
+}
+
+// 将路径平台化
+projectPath = platformPtath(projectPath)
+rootModelDir = platformPtath(rootModelDir)
 
 def static getHbmXmlDir(projectPath) {
     // /Users/apple/shinowProject/abc-lims-materiel-management/src/main/resources/com/shinow/abc
@@ -37,10 +49,6 @@ def static getHbmXmlDir(projectPath) {
 def static getTestClassDir(projectPath) {
     // /Users/apple/shinowProject/abc-lims-materiel-management/src/test/java/com/shinow/abc
     return projectPath.replace("src/main/java/", "src/test/java/")
-}
-
-FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generated files") { dir ->
-    SELECTION.filter { it instanceof DasTable }.each { generate(it, dir) }
 }
 
 def static getPackageName(dir) {
@@ -62,6 +70,9 @@ def static getPackageName(dir) {
     return resultPackageName.substring(0, resultPackageName.length() - 1);
 }
 
+FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generated files") { dir ->
+    SELECTION.filter { it instanceof DasTable }.each { generate(it, dir) }
+}
 
 def generate(table, dir) {
     def generateDir
