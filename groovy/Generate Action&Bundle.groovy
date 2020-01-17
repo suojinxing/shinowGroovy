@@ -9,7 +9,7 @@ import java.util.List;
 
 // 自定义配置项
 prefixLength = 6
-
+sessionFactoryKey = "autologousmsc"
 projectPath = "/Users/apple/shinowProject/abc-lims-msc-pluripotent/src/main/java/com/shinow/abc"
 rootModelDir = "xxxmodelxxx";
 packageName = ""
@@ -63,12 +63,132 @@ def generate(table, dir) {
     new File(generateActionDir, className + "Action.java").withPrintWriter { out -> generatePojoAction(packageName, out, className, fields) }
     new File(generateActionDir, "OperatorsAction.java").withPrintWriter { out -> generateOperatorsAction(packageName, out, className, fields) }
     new File(generateActionDir, "ContextMenuAction.java").withPrintWriter { out -> generateMenuAction(packageName, out, className, fields) }
+    new File(generateActionDir, "ListToolbarAction.java").withPrintWriter { out -> generateListToolBarAction(packageName, out, className, fields) }
     new File(generateBundleDir, className + "Bundle.java").withPrintWriter { out -> generateBundle(packageName, out, className, fields) }
 }
 
 // 获取类名的第一个字母，并把它变成小写字母返回。
 def getFirstCharToLower(className){
     return (char)(className.charAt(0)+32)
+}
+
+def generateListToolBarAction(packageName, out, className, fields){
+    out.println "package $packageName.${rootModelDir};"
+    out.println "\n" +
+            "import com.fasterxml.jackson.databind.ObjectMapper;\n" +
+            "import com.shinow.abc.amili.bundle.Action;\n" +
+            "import com.shinow.abc.amili.security.UserDescriptor;\n" +
+            "import com.shinow.abc.amili.util.ExtThemeHelper;\n" +
+            "\n" +
+            "import javax.servlet.http.HttpServletRequest;\n" +
+            "import javax.servlet.http.HttpServletResponse;\n" +
+            "import java.text.DateFormat;\n" +
+            "import java.text.SimpleDateFormat;\n" +
+            "import java.util.ArrayList;\n" +
+            "import java.util.Date;\n" +
+            "import java.util.HashMap;\n" +
+            "import java.util.List;\n" +
+            "\n" +
+            "public class ListToolbarAction implements Action {\n" +
+            "    @Override\n" +
+            "    public String getId() {\n" +
+            "        return \"listtoolbar\";\n" +
+            "    }\n" +
+            "\n" +
+            "    @Override\n" +
+            "    public String getName() {\n" +
+            "        return \"列表工具条\";\n" +
+            "    }\n" +
+            "\n" +
+            "    @Override\n" +
+            "    public String getDescription() {\n" +
+            "        return \"返回列表工具条\";\n" +
+            "    }\n" +
+            "\n" +
+            "    @Override\n" +
+            "    public void execute(HttpServletRequest request, HttpServletResponse response, UserDescriptor userDescriptor) throws Exception {\n" +
+            "\n" +
+            "        ObjectMapper objectMapper = new ObjectMapper();\n" +
+            "        String theme = request.getParameter(\"theme\");\n" +
+            "        HashMap<String, Object> toolbar = new HashMap<>();\n" +
+            "        toolbar.put(\"xtype\", \"toolbar\");\n" +
+            "        toolbar.put(\"dock\", \"top\");\n" +
+            "        toolbar.put(\"border\", 0);\n" +
+            "\n" +
+            "        List toolbarItems = new ArrayList();\n" +
+            "\n" +
+            "        if (userDescriptor.can(\"${rootModelDir}_read\")) {\n" +
+            "            //HashMap<String, Object> timeMenuContainer = new HashMap<>();\n" +
+            "            //timeMenuContainer.put(\"text\", \"SET日期\");\n" +
+            "            //timeMenuContainer.put(\"iconCls\", \"${rootModelDir}-list-time\");\n" +
+            "            //HashMap<String, Object> timeMenu = new HashMap<>();\n" +
+            "            //timeMenu.put(\"xtype\", \"${rootModelDir}-view-date-menu\");\n" +
+            "            //timeMenuContainer.put(\"menu\", timeMenu);\n" +
+            "            //toolbarItems.add(timeMenuContainer);\n" +
+            "\n" +
+            "            HashMap<String, Object> separator = new HashMap<>();\n" +
+            "            //separator.put(\"xtype\", \"tbseparator\");\n" +
+            "            //toolbarItems.add(separator);\n" +
+            "\n" +
+            "            //HashMap<String, Object> selectedDate = new HashMap<>();\n" +
+            "            //selectedDate.put(\"xtype\", \"label\");\n" +
+            "            //selectedDate.put(\"reference\", \"selectedDay\");\n" +
+            "            //DateFormat df = new SimpleDateFormat(\"yyyy-MM-dd\");\n" +
+            "            //selectedDate.put(\"text\", df.format(new Date()));\n" +
+            "            //toolbarItems.add(selectedDate);\n" +
+            "\n" +
+            "            separator.put(\"xtype\", \"tbseparator\");\n" +
+            "            toolbarItems.add(separator);\n" +
+            "\n" +
+            "            //HashMap<String, Object> barcodeTextFieldBegin = new HashMap<>();\n" +
+            "            //HashMap<String, Object> barcodeBlur = new HashMap<>();\n" +
+            "            //barcodeTextFieldBegin.put(\"xtype\", \"textfield\");\n" +
+            "            //barcodeTextFieldBegin.put(\"emptyText\", \"条码号开始\");\n" +
+            "            //barcodeTextFieldBegin.put(\"name\", \"beginBarcode\");\n" +
+            "            //barcodeTextFieldBegin.put(\"width\", ExtThemeHelper.tickMark(10, theme));\n" +
+            "            //barcodeTextFieldBegin.put(\"reference\", \"barcode\");\n" +
+            "            //barcodeBlur.put(\"blur\", \"beginBarcodeBlur\");\n" +
+            "            //barcodeTextFieldBegin.put(\"listeners\", barcodeBlur);\n" +
+            "            //toolbarItems.add(barcodeTextFieldBegin);\n" +
+            "\n" +
+            "            //HashMap<String, Object> barcodeTextFieldEnd = new HashMap<>();\n" +
+            "            //barcodeTextFieldEnd.put(\"xtype\", \"textfield\");\n" +
+            "            //barcodeTextFieldEnd.put(\"emptyText\", \"条码号结束\");\n" +
+            "            //barcodeTextFieldEnd.put(\"name\", \"endBarcode\");\n" +
+            "            //barcodeTextFieldEnd.put(\"width\", ExtThemeHelper.tickMark(10, theme));\n" +
+            "            //barcodeTextFieldEnd.put(\"reference\", \"barcode\");\n" +
+            "            //toolbarItems.add(barcodeTextFieldEnd);\n" +
+            "\n" +
+            "            HashMap<String, Object> searchButton = new HashMap<>();\n" +
+            "            HashMap<String, Object> searchButtonListeners = new HashMap<>();\n" +
+            "            searchButton.put(\"text\", \"查询\");\n" +
+            "            searchButton.put(\"name\", \"search\");\n" +
+            "            searchButton.put(\"iconCls\", \"${rootModelDir}-list-search\");\n" +
+            "            searchButton.put(\"reference\", \"searchButton\");\n" +
+            "            searchButtonListeners.put(\"click\", \"search\");\n" +
+            "            searchButton.put(\"listeners\", searchButtonListeners);\n" +
+            "            toolbarItems.add(searchButton);\n" +
+            "\n" +
+            "            HashMap<String, Object> resetButton = new HashMap<>();\n" +
+            "            HashMap<String, Object> resetButtonListeners = new HashMap<>();\n" +
+            "            resetButton.put(\"text\", \"重置\");\n" +
+            "            resetButton.put(\"name\", \"reset\");\n" +
+            "            resetButton.put(\"iconCls\", \"${rootModelDir}-list-reset\");\n" +
+            "            resetButtonListeners.put(\"click\", \"reset\");\n" +
+            "            resetButton.put(\"listeners\", resetButtonListeners);\n" +
+            "            toolbarItems.add(resetButton);\n" +
+            "        }\n" +
+            "        toolbar.put(\"items\", toolbarItems);\n" +
+            "\n" +
+            "        if (toolbarItems.size() == 0) {\n" +
+            "            toolbar.put(\"hidden\", true);\n" +
+            "        }\n" +
+            "\n" +
+            "        response.setContentType(\"application/json\");\n" +
+            "        response.setCharacterEncoding(\"utf-8\");\n" +
+            "        response.getWriter().write(objectMapper.writeValueAsString(toolbar));\n" +
+            "    }\n" +
+            "}"
 }
 
 def generateMenuAction(packageName, out, className, fields){
@@ -109,7 +229,7 @@ def generateMenuAction(packageName, out, className, fields){
             "    public void execute(HttpServletRequest request, HttpServletResponse response, UserDescriptor userDescriptor) throws Exception {\n" +
             "        ObjectMapper mapper = new ObjectMapper();\n" +
             "        String uuid = request.getParameter(\"uuid\");\n" +
-            "        Session session = SessionManager.getInstance().getCurrentSession(\"autologousmsc\");\n" +
+            "        Session session = SessionManager.getInstance().getCurrentSession(\"${sessionFactoryKey}\");\n" +
             "        Transaction tx = null;\n" +
             "        ${className} ${getFirstCharToLower(className)}${className.substring(1)} = null;\n" +
             "        try {\n" +
@@ -205,7 +325,7 @@ def generatePojoAction(packageName, out, className, fields) {
             "        mapper.setDefaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.ALWAYS, JsonInclude.Include.NON_NULL));\n" +
             "        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);\n" +
             "        ${className} ${getFirstCharToLower(className)}${className.substring(1)};\n" +
-            "        Session session = SessionManager.getInstance().getCurrentSession(\"xxxxxx_id__xxxxxxxx\");\n" +
+            "        Session session = SessionManager.getInstance().getCurrentSession(\"${sessionFactoryKey}\");\n" +
             "        Transaction tx = null;\n" +
             "        try {\n" +
             "            tx = session.beginTransaction();\n" +
@@ -291,7 +411,7 @@ def generatePojosAction(packageName, out, className, fields) {
             "            });\n" +
             "        }\n" +
             "        PagedList<${className}> pagedList = null;\n" +
-            "        Session session = SessionManager.getInstance().getCurrentSession(\"xxxxxx__id__xxxxx\");\n" +
+            "        Session session = SessionManager.getInstance().getCurrentSession(\"${sessionFactoryKey}\");\n" +
             "        Transaction tx = null;\n" +
             "        try {\n" +
             "            tx = session.beginTransaction();\n" +
@@ -354,7 +474,7 @@ def generateOperatorsAction(packageName, out, className, fields) {
             "    @Override\n" +
             "    public void execute(HttpServletRequest request, HttpServletResponse response, UserDescriptor userDescriptor) throws Exception {\n" +
             "        String sql = \"SELECT T.AVATAR AS value,T.NAME AS name FROM TBL_USER T\";\n" +
-            "        Session session = SessionManager.getInstance().getCurrentSession(\"xxx_xxxx_id_xxxx\");\n" +
+            "        Session session = SessionManager.getInstance().getCurrentSession(\"${sessionFactoryKey}\");\n" +
             "        Transaction tx = null;\n" +
             "        HashMap<String, Object> resultObject = new HashMap<>();\n" +
             "        try {\n" +
@@ -404,7 +524,7 @@ def generateBundle(packageName, out, className, fields) {
             "\n" +
             "    @Override\n" +
             "    public String getName() {\n" +
-            "        return \"xxxxxxxplease_set_NAMExxxxxxx\";\n" +
+            "        return \"xxxxxxxPLEASE_SET_NAMExxxxxxx\";\n" +
             "    }\n" +
             "\n" +
             "    @Override\n" +
@@ -414,14 +534,16 @@ def generateBundle(packageName, out, className, fields) {
             "        this.enroll(new ${className}sAction());\n" +
             "        this.enroll(new OperatorsAction());\n" +
             "        this.enroll(new ContextMenuAction());\n" +
+            "        this.enroll(new ListToolbarAction());\n" +
             "\n" +
-            "        PermissionDescriptor readPermissionDescriptor = new PermissionDescriptor(\"${rootModelDir}xxxxxx_read\", \"查看\", \"查看xxxxxxxplease_set_NAMExxxxxxx信息。\");\n" +
-            "        this.registPermission(\"xxxxxactionxxxxxx\", readPermissionDescriptor);\n" +
-            "        this.registPermission(\"xxxxxactionxxxxxxs\", readPermissionDescriptor);\n" +
+            "        PermissionDescriptor readPermissionDescriptor = new PermissionDescriptor(\"${rootModelDir}_read\", \"查看\", \"查看xxxxxxxPLEASE_SET_NAMExxxxxxx信息。\");\n" +
+            "        this.registPermission(\"${rootModelDir}\", readPermissionDescriptor);\n" +
+            "        this.registPermission(\"${rootModelDir}s\", readPermissionDescriptor);\n" +
             "        this.registPermission(\"operators\", readPermissionDescriptor);\n" +
+            "        this.registPermission(\"listtoolbar\", readPermissionDescriptor);\n" +
             "        this.registPermission(\"${rootModelDir}contextmenu\", readPermissionDescriptor);\n" +
             "\n" +
-            "        PermissionDescriptor managePermissionDescriptor = new PermissionDescriptor(\"${rootModelDir}_manage\", \"管理\", \"管理xxxxxxxplease_set_NAMExxxxxxx信息。\");\n" +
+            "        PermissionDescriptor managePermissionDescriptor = new PermissionDescriptor(\"${rootModelDir}_manage\", \"管理\", \"管理xxxxxxxPLEASE_SET_NAMExxxxxxx信息。\");\n" +
             "    }\n" +
             "\n" +
             "    @Override\n" +
@@ -431,6 +553,7 @@ def generateBundle(packageName, out, className, fields) {
             "        this.unenroll(new ${className}sAction());\n" +
             "        this.unenroll(new OperatorsAction());\n" +
             "        this.unenroll(new ContextMenuAction());\n" +
+            "        this.unenroll(new ListToolbarAction());\n" +
             "    }\n" +
             "}"
 }

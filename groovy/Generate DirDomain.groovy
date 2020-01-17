@@ -19,8 +19,11 @@ typeMapping = [
 // 自定义配置项，只配置数据库前缀长度和模块的包名
 // T_MSC_AU  ===> prefixLength=6   长度按字母算，下划线不做计数
 prefixLength = 6
-projectPath = "project_absolute_path_eg_user_shinow_abc"
-rootModelDir = "modelname_eg_materialmanagent";
+sessionFactoryKey = "autologousmsc"
+projectPath = "/Users/apple/shinowProject/abc-lims-msc-pluripotent/src/main/java/com/shinow/abc"
+rootModelDir = "xxxxxxxmodelxxxxx";
+//projectPath = "project_absolute_path_eg_user_shinow_abc"
+//rootModelDir = "modelname_eg_materialmanagent";
 
 hbmxmlDir = getHbmXmlDir(projectPath)
 testClassDir = getTestClassDir(projectPath)
@@ -70,8 +73,8 @@ def generate(table, dir) {
     // 定义文件夹
     File model = new File(projectPath + "/" + rootModelDir + "/domain/model");
     File service = new File(projectPath + "/" + rootModelDir + "/domain/service");
-    File persistence = new File(projectPath + "/" + rootModelDir + "/infrustrature/persistence");
-    File serviceImpl = new File(projectPath + "/" + rootModelDir + "/infrustrature/service");
+    File persistence = new File(projectPath + "/" + rootModelDir + "/infrastructure/persistence");
+    File serviceImpl = new File(projectPath + "/" + rootModelDir + "/infrastructure/service");
     File hbmxml = new File(hbmxmlDir + "/" + rootModelDir + "/domain/model");
     File testClass = new File(testClassDir + "/" + rootModelDir + "/domain/model");
 
@@ -113,11 +116,11 @@ def generate(table, dir) {
                 // Service接口
                 new File(generateDir, className + "QueryService.java").withPrintWriter { out -> generateService(entityImportPath, packageName, out, className, fields) }
                 break;
-            case "infrustrature/persistence":
+            case "infrastructure/persistence":
                 // Repository实现类
                 new File(generateDir, "Hibernate" + className + "Repository.java").withPrintWriter { out -> generateRepositoryImpl(entityImportPath, packageName, out, className, fields) }
                 break;
-            case "infrustrature/service":
+            case "infrastructure/service":
                 // Service实现类
                 new File(generateDir, "Hibernate" + className + "QueryService.java").withPrintWriter { out -> generateServiceImpl(serviceImportPath, entityImportPath, packageName, out, className, fields) }
                 break;
@@ -126,13 +129,13 @@ def generate(table, dir) {
 
     def hbmxmlGenerate = new File(hbmxmlDir + "/" + rootModelDir + "/domain/model")
     def testClassGenerate = new File(testClassDir + "/" + rootModelDir + "/domain/model")
-    // Hbm.xml
+    // 生成Hbm.xml
     new File(hbmxmlGenerate, className + ".hbm.xml").withPrintWriter { out -> generateHbmXml(entityPackPath, out, className, fields, table) }
     // 生成测试类
     new File(testClassGenerate, "Hibernate" + className + "Test" + ".java").withPrintWriter { out -> generateTestClass(entityImportPath, packageName, out, className, fields) }
 }
 // 测试类
-def static generateTestClass(entityImportPath, packageName, out, className, fields) {
+def generateTestClass(entityImportPath, packageName, out, className, fields) {
 //    className = className.substring(prefixLength)
 
     out.println "package $packageName;"
@@ -243,17 +246,17 @@ def static generateTestClass(entityImportPath, packageName, out, className, fiel
     out.println "}"
 }
 
-def static getSetPropertyMethod(propertyName) {
+def getSetPropertyMethod(propertyName) {
     return (propertyName[0] + "").toUpperCase() + propertyName.substring(1, propertyName.length())
 }
 
-def static generateTryStart(out, sessionName) {
-    out.println "       Session ${sessionName} = SessionManager.getInstance().getCurrentSession(\"please_replace_the_session_key.test\");"
+def generateTryStart(out, sessionName) {
+    out.println "       Session ${sessionName} = SessionManager.getInstance().getCurrentSession(\"${sessionFactoryKey}.test\");"
     out.println "       try {"
     out.println "           tx = ${sessionName}.beginTransaction();"
 }
 
-def static generateTryEnd(out) {
+def generateTryEnd(out) {
     out.println "           tx.commit();"
     out.println "       } catch (HibernateException e) {\n" +
             "           if (tx != null) {\n" +
@@ -269,7 +272,6 @@ def static generateHbmXml(entityPackPath, out, className, fields, table) {
     out.println "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
     out.println "<!DOCTYPE hibernate-mapping PUBLIC \"-//Hibernate/Hibernate Mapping DTD 3.0//EN\""
     out.println "\"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd\">"
-//    out.println "<hibernate-mapping package=\"com.shinow.abc..domain.model\">"
     out.println "<hibernate-mapping package=\"${entityPackPath}\">"
     out.println "   <class name=\"${className}\" table=\"" + table.getName() + "\""
     out.println "       dynamic-insert=\"true\" dynamic-update=\"true\">"
@@ -495,7 +497,7 @@ def static generatePojo(packageName, out, className, fields) {
     out.println "}"
 }
 
-// --------本就有的方法
+// --------本就有的方法------
 def calcFields(table) {
     DasUtil.getColumns(table).reduce([]) { fields, col ->
         def spec = Case.LOWER.apply(col.getDataType().getSpecification())
