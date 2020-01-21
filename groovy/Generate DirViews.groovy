@@ -22,7 +22,7 @@ typeMapping = [
 //rootModelDir = "modelname_eg_materialmanagent";
 prefixLength = 6
 projectPath = "/Users/apple/shinowProject/abc-lims-msc-pluripotent/src/main/java/com/shinow/abc"
-rootModelDir = "autologousoutstore";
+rootModelDir = "xxx_model_xxx";
 
 // "包名"
 packageName = ""
@@ -110,6 +110,7 @@ def generate(table, dir) {
                 break;
             case "view":
                 // 生成View、ViewController、ViewModel|DeteilView、DetailViewController、DetailViewModel
+                new File(generateDir, "ListView.css").withPrintWriter { out -> generateListViewCss(packageName, out, className, fields) }
                 new File(generateDir, "ListView.js").withPrintWriter { out -> generateListViewJs(packageName, out, className, fields) }
                 new File(generateDir, "ListViewController.js").withPrintWriter { out -> generateListViewControllerJs(packageName, out, className, fields) }
                 new File(generateDir, "ListViewModel.js").withPrintWriter { out -> generateListViewModelJs(packageName, out, className, fields) }
@@ -488,6 +489,38 @@ def generateListViewControllerJs(packageName, out, className, fields) {
             "        });\n" +
             "    },\n" +
             "});"
+}
+
+// ListView.css
+def generateListViewCss(packageName, out, className, fields) {
+    out.println "\n" +
+            ".${rootModelDir}-view-date-menu {\n" +
+            "    background-image: url(../imgs/time16.png);\n" +
+            "}\n" +
+            "\n" +
+            ".${rootModelDir}-list-edit {\n" +
+            "    background-image: url(../imgs/edit16.png);\n" +
+            "}\n" +
+            "\n" +
+            ".${rootModelDir}-list-add {\n" +
+            "    background-image: url(../imgs/add16.png);\n" +
+            "}\n" +
+            "\n" +
+            ".${rootModelDir}-list-del {\n" +
+            "    background-image: url(../imgs/del16.png);\n" +
+            "}\n" +
+            "\n" +
+            ".${rootModelDir}-list-search {\n" +
+            "    background-image: url(../imgs/search16.png);\n" +
+            "}\n" +
+            "\n" +
+            ".${rootModelDir}-list-reset {\n" +
+            "    background-image: url(../imgs/reset16.png);\n" +
+            "}\n" +
+            "\n" +
+            ".${rootModelDir}-list-time {\n" +
+            "    background-image: url(../imgs/time16.png);\n" +
+            "}"
 }
 
 // ListView
