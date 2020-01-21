@@ -21,8 +21,8 @@ typeMapping = [
 //projectPath = "project_absolute_path_eg_user_shinow_abc"
 //rootModelDir = "modelname_eg_materialmanagent";
 prefixLength = 6
-projectPath = "/Users\\apple\\shinowProject/abc-lims-msc-pluripotent/src/main/java/com/shinow/abc"
-rootModelDir = "xxxxx_model_xxxxx";
+projectPath = "/Users/apple/shinowProject/abc-lims-msc-pluripotent/src/main/java/com/shinow/abc"
+rootModelDir = "autologousoutstore";
 
 // "包名"
 packageName = ""
@@ -113,9 +113,9 @@ def generate(table, dir) {
                 new File(generateDir, "ListView.js").withPrintWriter { out -> generateListViewJs(packageName, out, className, fields) }
                 new File(generateDir, "ListViewController.js").withPrintWriter { out -> generateListViewControllerJs(packageName, out, className, fields) }
                 new File(generateDir, "ListViewModel.js").withPrintWriter { out -> generateListViewModelJs(packageName, out, className, fields) }
-                new File(generateDir, "DetialView.js").withPrintWriter { out -> generateDeatilViewJs(packageName, out, className, fields) }
+                new File(generateDir, "DetailView.js").withPrintWriter { out -> generateDeatilViewJs(packageName, out, className, fields) }
                 new File(generateDir, "DetailViewController.js").withPrintWriter { out -> generateDeteilViewControllerJs(packageName, out, className, fields) }
-                new File(generateDir, "DetialViewModel.js").withPrintWriter { out -> generateDetialViewModelJs(packageName, out, className, fields) }
+                new File(generateDir, "DetailViewModel.js").withPrintWriter { out -> generateDetialViewModelJs(packageName, out, className, fields) }
                 break;
         }
     }
@@ -473,7 +473,7 @@ def generateListViewControllerJs(packageName, out, className, fields) {
             "            params: {uuid: uuid},\n" +
             "            failure(response, options) {},\n" +
             "            success(record, operation) {\n" +
-            "                panel = Ext.create('Amili.${rootModelDir}.view.DetailView', {\n" +
+            "                let panel = Ext.create('Amili.${rootModelDir}.view.DetailView', {\n" +
             "                    width: Amili.tickMark(30, 1),\n" +
             "                    height: Amili.tickMark(30, 2),\n" +
             "                    scrollable: 'y',\n" +
